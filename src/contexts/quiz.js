@@ -1,14 +1,23 @@
 import {createContext, useReducer} from "react";
+import questions from '../data'
 
 const initialState = {
     currentQuestionIndex: 0,
-    questions: []
+    questions,
+    showResults: false
 }
 const reducer = (state, action) => {
     console.log(state)
     switch (action.type) {
         case 'NEXT_QUESTION':
-            return {...state, currentQuestionIndex: state.currentQuestionIndex+1}
+            const showResults = state.currentQuestionIndex === state.questions.length-1
+            const currentQuestionIndex = showResults ? state.currentQuestionIndex :
+                state.currentQuestionIndex+1
+            return {...state,
+                currentQuestionIndex,
+                showResults}
+        case 'RESTART':
+            return initialState
         default:
             return state
     }

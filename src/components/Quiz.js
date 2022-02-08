@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import Question from "./Question";
 import {QuizContext} from "../contexts/quiz";
+import {type} from "@testing-library/user-event/dist/type";
 
 
 
@@ -9,24 +10,33 @@ const Quiz = () => {
     const [quizState, dispatch] = useContext(QuizContext)
 
 
-    // const [questions, setQuestions] = useState([])
-    // const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-
     return (
         <div className={'quiz'}>
-            <div>
+            {quizState.showResults && (
+                <div className={'results'}>
+                    <div className={'congratulations'}>
+                        Congratulation
+                    </div>
+                    <div className={'results-info'}>
+                        <div>You have completed the quiz</div>
+                        <div>You've got 4 of {quizState.questions.length}</div>
+                    </div>
+                    <div className={'next-button'} onClick={()=> dispatch({type: 'RESTART'})}>Restart</div>
+                </div>
+            )}
+            { !quizState.showResults && (<div>
                 <div className={'score'}>
-                    Question 1/8
+                    Question {quizState.currentQuestionIndex + 1}/{quizState.questions.length}
                 </div>
                 <Question/>
                 <div
                     className={'next-button'}
-                    onClick={()=> dispatch({type: 'NEXT_QUESTION'})}
+                    onClick={() => dispatch({type: 'NEXT_QUESTION'})}
                 >
                     Next question
                 </div>
             </div>
-
+            )}
         </div>
     );
 };
